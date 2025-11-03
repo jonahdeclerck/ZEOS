@@ -42,7 +42,7 @@
     }
 
     h1 {
-      font-size: 18px;
+      font-size: clamp(18px, 2vw, 24px);
       margin: 0 0 12px;
       color: var(--text-primary);
     }
@@ -133,6 +133,17 @@
       margin-top: 12px;
     }
 
+    .card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+      width: clamp(420px, 50%, 600px); /* scales between 420px and 600px */
+      max-width: 96%;
+      padding: 18px;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
     .tutorial-cards {
       display: flex;
       flex-direction: column;
@@ -148,13 +159,13 @@
 
     .tutorial-card h2 {
       margin: 0 0 6px;
-      font-size: 16px;
+      font-size: clamp(16px, 1.5vw, 20px);
       color: var(--accent);
     }
 
     .tutorial-card p {
       margin: 0;
-      font-size: 14px;
+      font-size: clamp(14px, 1.2vw, 16px);
       color: var(--text-muted);
       line-height: 1.4;
     }
