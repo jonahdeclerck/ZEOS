@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Simple Checkbox List — Dark Mode</title>
+  <style>
+    :root {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color-scheme: dark;
+      --bg-main: #1e1f24;
+      --bg-card: #2a2b32;
+      --bg-hover: #343541;
+      --text-primary: #e4e6eb;
+      --text-muted: #a3a3a3;
+      --accent: #df2ac4;
+      --border: #3a3b45;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: var(--bg-main);
+      margin: 0;
+      padding: 24px;
+      color: var(--text-primary);
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+      width: 420px;
+      max-width: 96%;
+      padding: 18px;
+      border: 1px solid var(--border);
+      transition: background 0.3s ease;
+    }
+
+    h1 {
+      font-size: 18px;
+      margin: 0 0 12px;
+      color: var(--text-primary);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+
+    li:hover {
+      background: var(--bg-hover);
+    }
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 18px;
+      margin: 0;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    label {
+      cursor: pointer;
+      user-select: none;
+      flex: 1;
+      color: var(--text-primary);
+      transition: opacity 0.2s;
+    }
+
+    input[type="checkbox"]:checked + label {
+      opacity: 0.6;
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+
+    button {
+      border: 0;
+      padding: 8px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      background: var(--bg-hover);
+      color: var(--text-primary);
+      margin-top: 12px;
+      width: 100%;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    button:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    @media (max-width: 420px) {
+      .card {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="card" aria-label="Tasks">
+    <h1>Sim Case Checklist</h1>
+    <ul>
+      <li><input id="i-1" type="checkbox"><label for="i-1">Laptop</label></li>
+      <li><input id="i-2" type="checkbox"><label for="i-2">Goggles</label></li>
+      <li><input id="i-3" type="checkbox"><label for="i-3">Controller</label></li>
+      <li><input id="i-4" type="checkbox"><label for="i-4">HDMI Cable</label></li>
+      <li><input id="i-5" type="checkbox"><label for="i-5">USB-A 9V Adapter for the goggles</label></li>
+    </ul>
+    <button type="reset" onclick="document.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.checked=false)">Reset</button>
+  </section>
+</body>
+</html>
