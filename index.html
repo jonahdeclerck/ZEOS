@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Sim Case Helper</title>
+  <title>ZEOS Combat Simulator</title>
+  <link rel="icon" href="./img/icon.png" type="image/png" />
   <style>
     :root {
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
@@ -144,6 +145,15 @@
       transition: all 0.3s ease;
     }
 
+    /* Increase max width for Setup (tutorial) and Checklist on wide screens */
+    @media (min-width: 900px) {
+      #checklist.card,
+      #tutorial.card {
+        width: clamp(520px, 55%, 900px);
+        max-width: 900px;
+      }
+    }
+
     .tutorial-cards {
       display: flex;
       flex-direction: column;
@@ -185,27 +195,160 @@
     @media (max-width: 420px) {
       .card { padding: 12px; }
     }
+
+    /* Collapsible group styling (single big card) */
+      .tutorial-group {
+        background: var(--bg-hover);
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        margin-bottom: 24px;
+      }
+      .tutorial-group summary {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: default;
+        padding: 8px;
+        margin: 0;
+      }
+      .tutorial-group summary::-webkit-details-marker { display: none; }
+
+      /* Larger arrow: match text height */
+      .arrow {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        border: 1px solid transparent;
+        background: transparent;
+        cursor: pointer;
+        padding: 0;
+        margin: 0;
+        width: 1em;
+        height: 1em;
+        transition: transform 0.18s ease, background 0.12s;
+        flex: 0 0 auto;
+      }
+      .arrow svg {
+        width: 1em;
+        height: 1em;
+        transform-origin: center;
+        transition: transform 0.18s ease;
+      }
+      .tutorial-group[open] .arrow svg { transform: rotate(180deg); }
+      .arrow:focus { outline: 2px solid rgba(96,95,171,0.35); }
+
+      summary h2 {
+        margin: 0;
+        font-size: clamp(16px, 1.6vw, 18px);
+        display:flex;
+        gap:8px;
+        align-items:center;
+      }
+
+      .tutorial-content {
+        margin-top: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .tutorial-step {
+        background: var(--bg-card);
+        border-radius: 8px;
+        padding: 12px;
+        border: 1px solid var(--border);
+      }
+
+      .tutorial-step h3 {
+        margin: 0 0 16px 0;
+        color: var(--text-primary);
+        font-size: clamp(14px, 1.2vw, 15px);
+      }
+
+      .tutorial-step p {
+        margin: 0 0 8px 0;
+        color: var(--text-muted);
+        font-size: 14px;
+      }
+
+      .tutorial-group[open] summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
   </style>
+
 </head>
 <body>
-  <section id="home" class="card screen active">
-    <h1>Welcome to Sim Case Helper</h1>
-    <p style="color:var(--text-muted);font-size:14px;">Choose an option to get started:</p>
+  <section id="home" class="card screen active" >
+    <div style="text-align:center;">
+      <img src="./img/zeos_logo.png" alt="Zeos Logo" style="width:240x;margin-bottom:48px;">
+      <h1>Welcome to the ZEOS FPV Combat Simulator Helper</h1>
+      <p style="color:var(--text-muted);font-size:14px;">Choose an option to get started:</p>
+    </div>
+  
     <div class="home-buttons">
       <button onclick="showScreen('tutorial')">Setup</button>
       <button onclick="showScreen('checklist')">Checklist</button>
+
+      <button onclick="downloadSelf()">Download HTML</button>
+
+      <!-- Add this function to the existing <script> block -->
+      <script>
+        async function downloadSelf(filename = 'sim-case-helper.html') {
+          // clone the document so we can modify img src without touching the live DOM
+          const clone = document.documentElement.cloneNode(true);
+          const imgs = Array.from(clone.querySelectorAll('img'));
+
+          // helper: convert a blob to data URL
+          const blobToDataURL = (blob) => new Promise((res, rej) => {
+        const r = new FileReader();
+        r.onload = () => res(r.result);
+        r.onerror = rej;
+        r.readAsDataURL(blob);
+          });
+
+          for (const img of imgs) {
+        const src = img.getAttribute('src') || '';
+        if (!src || src.startsWith('data:') || src.startsWith('blob:')) continue;
+        try {
+          // attempt to fetch the image and inline it as base64 data URI
+          const resp = await fetch(src, {mode: 'cors'});
+          if (!resp.ok) throw new Error('fetch failed');
+          const blob = await resp.blob();
+          const dataUrl = await blobToDataURL(blob);
+          img.setAttribute('src', dataUrl);
+        } catch (err) {
+          // if fetch fails (CORS/file:// restrictions), leave the original src
+          // optionally you could notify the user here
+        }
+          }
+
+          const doctype = '<!doctype html>\n';
+          const html = doctype + clone.outerHTML;
+          const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 1500);
+        }
+      </script>
     </div>
   </section>
 
   <section id="checklist" class="card screen">
-    <h1>Sim Case Contents Checklist</h1>
+    <h1>Checklist</h1>
     <ul>
       <li><input id="i-1" type="checkbox"><label for="i-1">Laptop</label></li>
       <li><input id="i-2" type="checkbox"><label for="i-2">Controller</label></li>
       <li><input id="i-3" type="checkbox"><label for="i-3">Orqa FPV Goggles</label></li>
       <li><input id="i-4" type="checkbox"><label for="i-4">USB-A To USB-C Cable</label></li>
       <li><input id="i-5" type="checkbox"><label for="i-5">USB-A To 9V Barrel Jack  Cable</label></li>
-      <li><input id="i-6" type="checkbox"><label for="i-6">HDMI Cable</label></li>
+      <li><input id="i-6" type="checkbox"><label for="i-6">HDMI to Micro HDMI Cable</label></li>
+      <li><input id="i-7" type="checkbox"><label for="i-7">Instructions Sheet</label></li>
     </ul>
     <button type="reset" onclick="document.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.checked=false)">Deselect all</button>
     <button class="back-btn" onclick="showScreen('home')">← Back</button>
@@ -213,25 +356,82 @@
 
   <section id="tutorial" class="card screen">
     <h1>Tutorials</h1>
-    <div class="tutorial-cards">
-      <div class="tutorial-card">
-      <h2>Connecting an RC Controller via USB</h2>
-      <p>Connect your RC controller to your laptop using a USB cable. Most modern controllers will be recognized automatically as a joystick input. Check under “Game Controllers” settings to confirm input detection before use in simulators or software.</p>
-      <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px;">
-        <img src="./img/1_options.webp" alt="Options screen" style="width:100%;border-radius:8px;">
-        <img src="./img/2_controls.webp" alt="Controls screen" style="width:100%;border-radius:8px;">
-        <img src="./img/3_controller.webp" alt="Controller screen" style="width:100%;border-radius:8px;">
-        <img src="./img/4_calibrate.webp" alt="Calibrate screen" style="width:100%;border-radius:8px;">
-        <img src="./img/5_start_calibration.webp" alt="Start calibration screen" style="width:100%;border-radius:8px;">
-        <p>Follow the on-screen instructions to complete the calibration process.</p>
+
+    <details class="tutorial-group" open>
+      <summary>
+        <button class="arrow" aria-label="Toggle section" aria-expanded="true" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <h2><span class="title">Controller Setup</span></h2>
+      </summary>
+
+      <div class="tutorial-content">
+
+        
+        <div class="tutorial-step">
+          <h3>1. Connecting the Controller to the Laptop</h3>
+          <p>Connect your RC controller to your laptop using a USB cable. Most modern controllers are recognized automatically as joystick input—check “Game Controllers” to confirm before using simulators.</p>
+          <img src="./img/controller_usb.png" alt="the usb-c port on the orqa fpv.ctrl controller" style="width:100%;border-radius:8px;margin-top:8px;">
+        </div>
+
+        <div class="tutorial-step">
+          <h3>1.2 Enter Controls</h3>
+          <p>In the startup menu, press the CONTROLS button to enter control settings to set up your controller.</p>
+          <img src="./img/1_main_screen.png" alt="Options screen" style="width:100%;border-radius:8px;margin-top:8px;">
+        </div>
+
+        <div class="tutorial-step">
+          <h3>1.3 Enter Controls</h3>
+          <p>In the startup menu, press the CONTROLS button to enter control settings to set up your controller.</p>
+          <img src="./img/1_main_screen.png" alt="Options screen" style="width:100%;border-radius:8px;margin-top:8px;">
+        </div>
+
+        <div class="tutorial-step">
+          <h3>1.4 Assisted Calibration</h3>
+          <p>Press ASSISTED CALIBRATION to enter the guided calibration. If that doesn't suffice, use MANUAL CALIBRATION to tailor settings.</p>
+          <img src="./img/2_controls.png" alt="Controls screen" style="width:100%;border-radius:8px;margin-top:8px;">
+        </div>
+
+        <div class="tutorial-step">
+          <h3>1.5 Calibrate</h3>
+          <p>Press CALIBRATE to start the guided calibration process and follow on-screen instructions to complete it.</p>
+          <img src="./img/3_assisted_calibration.png" alt="Controller screen" style="width:100%;border-radius:8px;margin-top:8px;">
+          <img src="./img/4_calibrate.webp" alt="Calibrate screen" style="width:100%;border-radius:8px;margin-top:8px;">
+        </div>
       </div>
-    </div>
-      <div class="tutorial-card">
-        <h2>Wiring Orqa FPV Goggles to Laptop</h2>
-        <p>Use an HDMI cable from the laptop to the goggles’ HDMI input for video output.</p>
-        <p>For power, connect the goggles to a the laptop using the usb-a 9v barrel jack cable.</p>
+    </details>
+
+    <details class="tutorial-group">
+      <summary>
+        <button class="arrow" aria-label="Toggle section" aria-expanded="false" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <h2><span class="title">Goggles Setup</span></h2>
+      </summary>
+
+      <div class="tutorial-content">
+        <div class="tutorial-step">
+          <h3>2. Wiring Orqa FPV Goggles to Laptop</h3>
+          <!-- <p>Use an HDMI cable from the laptop to the goggles’ HDMI input for video. For power, connect the goggles using the USB-A to 9V barrel jack cable.</p> -->
+           <p>make sure the HDMI adapter on the Framework Laptop is correctly installed, we will be plugging the FPV Goggles into this. </p>
+          <img src="./img/laptop_hdmi.png" alt="hdmi port on the framework laptop" style="width:100%;border-radius:8px;margin-top:8px;">
+        </div>
       </div>
-    </div>
+
+      <div class="tutorial-step">
+          <h3>2. Wiring Orqa FPV Goggles to Laptop</h3>
+          <!-- <p>Use an HDMI cable from the laptop to the goggles’ HDMI input for video. For power, connect the goggles using the USB-A to 9V barrel jack cable.</p> -->
+           <p>Use the Micro HDMI to HDMI Cable to connect the ORQA FPV Goggles' Micro HDMI port, located on the side of the goggles, to the Framework laptop's HDMI port </p>
+          <img src="./img/goggles_hdmi.png" alt="Micro hdmi port on the orqa fpv goggles" style="width:100%;border-radius:8px;margin-top:8px;">
+        </div>
+      </div>
+
+    </details>
+
     <button class="back-btn" onclick="showScreen('home')">← Back</button>
   </section>
 
@@ -240,6 +440,40 @@
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById(id).classList.add('active');
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.tutorial-group').forEach(details => {
+        const summary = details.querySelector('summary');
+        const arrow = summary.querySelector('.arrow');
+
+        if (arrow) arrow.setAttribute('aria-expanded', details.open ? 'true' : 'false');
+
+        summary.addEventListener('click', (e) => {
+          if (e.target.closest('.arrow')) {
+            e.preventDefault();
+            details.open = !details.open;
+            if (arrow) arrow.setAttribute('aria-expanded', details.open ? 'true' : 'false');
+          } else {
+            e.preventDefault();
+          }
+        });
+
+        if (arrow) {
+          arrow.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              details.open = !details.open;
+              arrow.setAttribute('aria-expanded', details.open ? 'true' : 'false');
+              arrow.focus();
+            }
+          });
+        }
+
+        details.addEventListener('toggle', () => {
+          if (arrow) arrow.setAttribute('aria-expanded', details.open ? 'true' : 'false');
+        });
+      });
+    });
   </script>
 </body>
 </html>
