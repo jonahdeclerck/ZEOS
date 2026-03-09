@@ -46,7 +46,7 @@
       overflow-y: auto;
     }
 
-    .logo-area { text-align: left; margin-bottom: 30px; padding-left: 10px; }
+    .logo-area { text-align: left; margin-bottom: 30px;}
     .logo-area img { width: 140px; height: auto; }
 
     nav ul { list-style: none; padding: 0; margin: 0; }
@@ -197,6 +197,7 @@
       <li id="nav-tutorial">
         <a class="nav-link" onclick="showScreen('tutorial')">Setup Guide</a>
         <ul class="sub-nav">
+          <li><a href="#section-startup">Starting Up</a></li>
           <li><a href="#section-controller">Controller Setup</a></li>
           <li><a href="#section-goggles">Goggles Setup</a></li>
           <li><a href="#section-training">Launch a Training Mission</a></li>
@@ -209,7 +210,7 @@
       </li>
     </ul>
 
-    <button class="download-btn" onclick="downloadSelf()">Download HTML Wiki</button>
+    <button class="download-btn" onclick="downloadSelf()">Download Wiki as HTML</button>
   </nav>
 
   <div class="content-wrapper">
@@ -228,10 +229,22 @@
           <p class="subtitle">Hardware configuration and simulator mission launch.</p>
         </div>
 
-        <h2 id="section-controller">1. Controller Setup</h2>
+        <h2 id="section-startup">1. Starting Up</h2>
         
         <div class="step-block">
-          <h3>1.1 Physical Connection</h3>
+          <h3>1.1 Powering On</h3>
+          <p>
+            Locate the power button on the top right of the keyboard deck. Press and hold briefly until the button illuminates. 
+            Ensure the laptop is on a flat surface to allow for proper ventilation during high-performance simulation tasks.
+            upon starting up, the system will automatically launch the ZEOS Combat Simulator application.
+          </p>
+          <div class="img-container"><img src="./img/power_button.png" alt="Power button location"></div>
+        </div>
+
+        <h2 id="section-controller">2. Controller Setup</h2>
+        
+        <div class="step-block">
+          <h3>2.1 Physical Connection</h3>
           <p>
             Connect your RC controller to your laptop using the provided usb-c to usb-c cable, 
             and power up the controller by sliding the power switch, on the bottom of the controller, to the right.
@@ -241,22 +254,22 @@
         </div>
 
         <div class="step-block">
-          <h3>1.2 Access Controls Menu</h3>
+          <h3>2.2 Access Controls Menu</h3>
           <p>In the startup menu, press the <strong>CONTROLS</strong> button to enter control settings to set up your controller.</p>
           <div class="img-container"><img src="./img/1_main_screen.png" alt="Main menu"></div>
         </div>
 
         <div class="step-block">
-          <h3>1.3 Calibration Method</h3>
+          <h3>2.3 Calibration Method</h3>
           <p>
             Select the correct input device (look for terms like "USB Gamepad","Joystick", "HID Device" or the brand of your controller) and press <strong>ASSISTED CALIBRATION</strong> to enter the guided calibration. 
-            Later, if that doesn't suffice, use MANUAL CALIBRATION to tailor settings to your specific controller.
+            Later, if that doesn't suffice, use <strong>MANUAL CALIBRATION</strong> to tailor settings to your specific controller.
           </p>
           <div class="img-container"><img src="./img/2_controls.png" alt="Controls screen"></div>
         </div>
 
         <div class="step-block">
-          <h3>1.4 Finalize Calibration</h3>
+          <h3>2.4 Finalize Calibration</h3>
           <p>
             Press <strong>CALIBRATE</strong> to start the guided calibration process and follow on-screen instructions to complete it.
             after this, you will be presented with a visualization of your controller inputs, as well as a drone model, reacting to them, allowing you to verify that all channels are responding correctly.
@@ -265,46 +278,46 @@
           <div class="img-container"><img src="./img/4_calibrate.png" alt="Calibration finish"></div>
         </div>
 
-        <h2 id="section-goggles">2. Goggles Integration</h2>
+        <h2 id="section-goggles">3. Goggles Integration</h2>
         
         <div class="step-block">
-          <h3>2.1 Laptop Port Preparation</h3>
+          <h3>3.1 Laptop Port Preparation</h3>
           <p>Make sure the HDMI adapter on the Framework Laptop is correctly installed, we will be plugging the FPV Goggles into this.</p>
           <div class="img-container"><img src="./img/laptop_hdmi.png" alt="Laptop HDMI port"></div>
         </div>
 
         <div class="step-block">
-          <h3>2.2 Wiring and Power</h3>
+          <h3>3.2 Wiring and Power</h3>
           <p>Use the Micro HDMI to HDMI Cable to connect the ORQA FPV Goggles' Micro HDMI port to the Framework laptop's HDMI port. For power, connect either the provided 9V Barrel Jack to USB-A cable or the standalone battery.</p>
           <div class="img-container"><img src="./img/goggles_hdmi.png" alt="Goggles wiring"></div>
         </div>
 
-        <h2 id="section-training">3. Training Launch</h2>
+        <h2 id="section-training">4. Training Launch</h2>
 
         <div class="step-block">
-          <h3>3.1 Access Training Menu</h3>
+          <h3>4.1 Access Training Menu</h3>
           <p>From the main menu, click the <strong>TRAINING</strong> button to view available simulation scenarios.</p>
           <div class="img-container"><img src="./img/5_training_button.png" alt="Training button"></div>
         </div>
 
         <div class="step-block">
-          <h3>3.2 Select Scenario</h3>
+          <h3>4.2 Select Scenario</h3>
           <p>Choose your desired training type from the list. For this example, select <strong>One Way Attack Demo 1</strong>.</p>
           <div class="img-container"><img src="./img/6_select_scenario.png" alt="Scenario list"></div>
         </div>
 
         <div class="step-block">
-          <h3>3.3 Environment & Launch</h3>
+          <h3>4.3 Environment & Launch</h3>
           <p>On the right side of the screen, you can adjust the <strong>Weather and Time</strong> settings. Once configured, click the <strong>START</strong> button at the bottom right to launch the simulator.</p>
           <div class="img-container"><img src="./img/7_launch_settings.png" alt="Launch settings"></div>
           <div class="img-container"><img src="./img/8_mission.png" alt="Simulator launching"></div>
         </div>
 
-        <h2 id="section-shutdown">4. Shutdown </h2>
+        <h2 id="section-shutdown">5. Shutdown </h2>
         
         <div class="step-block">
           <h3>Laptop Shutdown</h3>
-          <p>The system is configured to respond to <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Delete</kbd> to trigger an easy <strong>instant</strong> shutdown.</p>
+          <p>The system is configured to respond to <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Delete</kbd> to trigger a simplified shutdown. you should briefly see the Framework logo appear on the screen, after which the laptop will shut down.</p>
           <div class="img-container">
             <img src="./img/keyboard.png" alt="Encircled shutdown keys">
           </div>
@@ -317,11 +330,14 @@
           <p class="subtitle">Verifying critical hardware components.</p>
         </div>
         <div class="checklist-card">
-          <div class="check-row"><input type="checkbox" id="c1"><label for="c1">Framework Laptop & Charger</label></div>
-          <div class="check-row"><input type="checkbox" id="c2"><label for="c2">Orqa FPV.Ctrl Controller</label></div>
-          <div class="check-row"><input type="checkbox" id="c3"><label for="c3">Orqa FPV.One Goggles</label></div>
-          <div class="check-row"><input type="checkbox" id="c4"><label for="c4">Micro HDMI to HDMI Cable</label></div>
-          <div class="check-row"><input type="checkbox" id="c5"><label for="c5">Power Cables (USB-A to 9V)</label></div>
+          <div class="check-row"><input type="checkbox" id="c1"><label for="c1">Framework Laptop</label></div>
+          <div class="check-row"><input type="checkbox" id="c2"><label for="c2">Framework Laptop USB-C Charger</label></div>
+          <div class="check-row"><input type="checkbox" id="c3"><label for="c3">Orqa FPV.Ctrl Controller</label></div>
+          <div class="check-row"><input type="checkbox" id="c4"><label for="c4">Orqa FPV.One Goggles</label></div>
+          <div class="check-row"><input type="checkbox" id="c5"><label for="c5">Micro HDMI to HDMI Cable</label></div>
+          <div class="check-row"><input type="checkbox" id="c6"><label for="c6">Power Cable (USB-A to 9V Barrel Jack)</label></div>
+          <div class="check-row"><input type="checkbox" id="c7"><label for="c7">Data Cable (USB-C to USB-C)</label></div>
+
         </div>
       </section>
     </main>
